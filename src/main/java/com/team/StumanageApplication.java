@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class StumanageApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(StumanageApplication.class, args);
     }
