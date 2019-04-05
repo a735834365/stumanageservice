@@ -1,10 +1,13 @@
 package com.team;
 
+import com.team.common.aop.ControllerAOP;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
  * https://segmentfault.com/a/1190000015413813?utm_source=tag-newest
  * create by yifeng
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.team")
 @RestController
+//@ComponentScan(basePackages = "team.common.aop")
 public class StumanageApplication {
 
 
