@@ -38,7 +38,25 @@ public class ResultBean<T> implements Serializable {
      */
     private int code = SUCCESS;
 
-    private T data;
+    
+    // 临时编写 get set
+    public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	private T data;
 
     public ResultBean() {
         super();
