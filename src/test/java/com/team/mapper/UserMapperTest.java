@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 /**
  * create by yifeng
  */
-@EnableAutoConfiguration
 public class UserMapperTest extends StumanageApplicationTest {
 
     @Resource
@@ -23,6 +22,7 @@ public class UserMapperTest extends StumanageApplicationTest {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    // 生成密码
     @Test
     public void passwordEncode() {
         String password = passwordEncoder.encode("123");
@@ -35,14 +35,14 @@ public class UserMapperTest extends StumanageApplicationTest {
         User user = new User();
         user.setUsername("tj666");
         user.setName("jojo");
-//        user.setPassword("$2a$10$QwHSZnf8QsJYtqUAXyDEmuV3X5ry.XtyIs1xlKCWaW2HbXIecaXLe");
+        user.setPassword("$2a$10$QwHSZnf8QsJYtqUAXyDEmuV3X5ry.XtyIs1xlKCWaW2HbXIecaXLe");
         userMapper.addUser(user);
     }
 
     @Test
     public void testFindUserById() {
 //        user.setPassword("$2a$10$QwHSZnf8QsJYtqUAXyDEmuV3X5ry.XtyIs1xlKCWaW2HbXIecaXLe");
-        userMapper.findUserByUserName("asdf123");
+        User user = userMapper.findUserByUserName("asdf123");
     }
 
 }
