@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.mapper.UserMapper">
+	
+	<resultMap type="com.team.bean.User" id="UserByUserNameMap">
+		<id column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<collection property="roles" ofType="com.team.bean.Role">
+			<id column="role_id" property="id"/>
+			<result column="role_name" property="name"/>
+			<result column="nameZh" property="nameZh"/>
+		</collection>
+	</resultMap>
+	<select id="findUserByUserName" parameterType="String" resultMap="UserByUserNameMap">
+		select users.*,role.id as role_id ,role.name as role_name,role.nameZh from users,role,user_role 
+		where users.username = #{username} and 
+		user_role.user_id = users.id and user_role.role_id = role.id	
+	</select>
+	<insert id="addUser" parameterType="com.team.bean.User">
+		insert into users(name,username,password)
+		values(#{name},#{username},#{password})
+	</insert>
+</mapper>

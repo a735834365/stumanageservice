@@ -30,7 +30,17 @@ public class User implements UserDetails{
         this.roles = roles;
     }
 
-    @JsonIgnore
+    private List<Role> roles;
+    
+    public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	@JsonIgnore
     private String password;
 
     public Long getId() {
