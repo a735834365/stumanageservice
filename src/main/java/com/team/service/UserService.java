@@ -1,6 +1,8 @@
 package com.team.service;
 
 import com.team.bean.Role;
+import com.team.mapper.UserMapper;
+
 import javafx.scene.Node;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -50,4 +52,10 @@ public class UserService implements UserDetailsService {
  /*   public User getHrById(Long hrId) {
         return user;
     }*/
+    @Autowired
+    UserMapper userMapper;
+    public com.team.bean.User getUserByUserName(String username) {
+    	return userMapper.findUserByUserName(username);
+    }
+    
 }
