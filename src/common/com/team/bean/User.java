@@ -17,10 +17,19 @@ import java.util.List;
 public class User  {
     private Long id;
     private String name;
-
     private String username;
 
-    @JsonIgnore
+    private List<Role> roles;
+    
+    public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	@JsonIgnore
     private String password;
 
     public Long getId() {
