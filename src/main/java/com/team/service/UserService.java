@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     // 解密
@@ -45,10 +45,11 @@ public class UserService implements UserDetailsService {
         logger.info("UserService.loadUserByUsername： username = " + username);
         User user = userMapper.findUserByUserName(username);
         Collection collection = user.getAuthorities();
-        logger.info("UserService.loadUserByUsername： getAuthorities size: " + collection.size());;
+        logger.info("UserService.loadUserByUsername： getAuthorities size: " + collection.size());
         if (user == null) {
             throw new UsernameNotFoundException("用户名不正确");
         }
+        return user;
 //        String password = passwordEncoder.encode("123456");
 //        if (user == null) {
 //            throw new UsernameNotFoundException("用户名不正确");
@@ -57,7 +58,6 @@ public class UserService implements UserDetailsService {
 //        return new User(username, password,
 //                true, true,true,true,
 //                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
-        return user;
     }
 
  /*   public User getHrById(Long hrId) {

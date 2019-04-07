@@ -6,7 +6,7 @@ import com.team.bean.User;
 
 @Mapper
 public interface UserMapper {
-	User findUserByUserName(@Param("username") String username);
-	
-	int addUser(User user);
+    User findUserByUserName(@Param("username") String username);
+
+    int addUser(User user);
 }

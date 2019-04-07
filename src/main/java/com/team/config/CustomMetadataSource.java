@@ -3,10 +3,12 @@ package com.team.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.bean.Menu;
 import com.team.bean.Role;
+import com.team.service.MenuService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.oauth2.provider.client.Jackson2ArrayOrStringDeserializer;
@@ -29,7 +31,10 @@ public class CustomMetadataSource implements FilterInvocationSecurityMetadataSou
 
     private Logger logger = LoggerFactory.getLogger(CustomMetadataSource.class);
 
-    AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+    @Autowired
+    private MenuService menuService;
 
     // 当前请求页面需要什么权限
     @Override
@@ -38,13 +43,14 @@ public class CustomMetadataSource implements FilterInvocationSecurityMetadataSou
         String requestUrl = ((FilterInvocation)object).getRequestUrl();
 
         logger.info("CustomMetadataSource:当前请求的页面：" + requestUrl);
-
-        // 如果是登陆页，则直接返回，无需处理
-        if("/sys-signIn.html".equals(requestUrl) || "/login".equals(requestUrl)) {
-            return null;
-        }
+//
+//        // 如果是登陆页，则直接返回，无需处理
+//        if("/login_p".equals(requestUrl)) {
+//            return null;
+//        }
         // 这里获取对应页面所需要的权限
-        List<Menu> allMenu = initMenu(new ArrayList(3));
+        List<Menu> allMenu = menuService.getAllMenu();
+//        logger.info("CustomMetadataSource.getAttributes->allMenu: " + allMenu);
         for (Menu menu : allMenu) {
             if (antPathMatcher.match(menu.getUrl(), requestUrl)
                     &&menu.getRoles().size()>0) {
@@ -54,7 +60,6 @@ public class CustomMetadataSource implements FilterInvocationSecurityMetadataSou
                 // role权限可能不止一个，所以需要做多个处理
                 for (int i = 0; i < size; i++) {
                     values[i] = roles.get(i).getName();
-                    System.out.println(values+" ");
                 }
                 return SecurityConfig.createList(values);
             }

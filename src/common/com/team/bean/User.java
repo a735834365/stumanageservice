@@ -21,24 +21,6 @@ public class User implements UserDetails{
     private String username;
     private List<Role> roles;
 
-    @JsonIgnore
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    private List<Role> roles;
-    
-    public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
 
 	@JsonIgnore
     private String password;

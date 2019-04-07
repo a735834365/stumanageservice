@@ -2,6 +2,7 @@ package com.team.mapper;
 
 import com.team.StumanageApplication;
 import com.team.StumanageApplicationTest;
+import com.team.bean.Menu;
 import com.team.bean.Role;
 import com.team.bean.User;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,6 +25,8 @@ public class UserMapperTest extends StumanageApplicationTest {
 
     @Resource
     UserMapper userMapper;
+    @Resource
+    MenuMapper menuMapper;
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -41,6 +45,14 @@ public class UserMapperTest extends StumanageApplicationTest {
        }
        System.out.println("++++++++++++++++");
     }
+
+    @Test
+    public void getAllMenu() {
+        List<Menu> menus = menuMapper.getAllMenu();
+        Menu menu = menus.get(0);
+        System.out.println(menu.getUrl());
+    }
+
     @Test
     @Rollback
     public void test() {

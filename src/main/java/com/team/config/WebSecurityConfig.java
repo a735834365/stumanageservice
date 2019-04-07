@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.common.beans.ResultBean;
 import com.team.common.utils.UserUtil;
 import com.team.exception.AuthenticationAccessDeniedHandler;
+import com.team.exception.CustomExceptionResolver;
 import com.team.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationAccessDeniedHandler accessDeniedHandler;
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/templates/sys-signIn.html", "/static/**");
+        web.ignoring().antMatchers("/index.html", "/static/**", "/login_p");
     }
 
     @Override
@@ -145,8 +145,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
                 .permitAll()
-                .and().csrf().disable()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .and().csrf().disable();
 
     }
 }

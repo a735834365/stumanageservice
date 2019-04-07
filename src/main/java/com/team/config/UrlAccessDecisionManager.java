@@ -33,8 +33,9 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
             ConfigAttribute ca = iterator.next();
             //当前请求需要的权限
             String needRole = ca.getAttribute();
-            logger.info("UrlAccessDecisionManager：当前请求需要的权限为" + needRole);
+            logger.info("UrlAccessDecisionManager：Required permissions" + needRole);
             if ("ROLE_LOGIN".equals(needRole)) {
+                logger.info("UrlAccessDecisionManager->decide:auth instaceof AnonymousAuthenticationToken  " + (auth instanceof AnonymousAuthenticationToken));
                 if (auth instanceof AnonymousAuthenticationToken) {
                     throw new BadCredentialsException("未登录");
                 } else
