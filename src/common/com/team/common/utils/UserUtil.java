@@ -1,9 +1,9 @@
 package com.team.common.utils;
 
+import com.team.bean.User;
 import com.team.common.exception.UnloginException;
 import org.slf4j.MDC;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 import java.security.Security;
 
