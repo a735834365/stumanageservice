@@ -18,7 +18,7 @@ public class User implements UserDetails {
 	private List<Role> roles;
 	private List<Menu> menus;
 	
-	
+	@JsonIgnore
 	public List<Menu> getMenus() {
 		return menus;
 	}
@@ -50,6 +50,7 @@ public class User implements UserDetails {
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
@@ -58,21 +59,25 @@ public class User implements UserDetails {
         }
         return authorities;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub

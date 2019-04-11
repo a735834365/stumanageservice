@@ -17,7 +17,7 @@ public class ResultBean<T> implements Serializable {
 
     public static final int NO_LOGIN = -1;
 
-    public static final int USERNAME_OR_PASSWORD_FAIL = -2;
+    public static final int USERNAME_OR_PASSWORD_NON = 3;
 
     public static final int SUCCESS = 0;
 

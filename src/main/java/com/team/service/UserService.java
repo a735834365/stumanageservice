@@ -38,6 +38,9 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("UserService.loadUserByUsername： username = " + username);
         User user = userMapper.findUserByUserName(username);
+        if(user == null) {
+            throw new UsernameNotFoundException("用户名不存在");
+        }
         Collection collection = user.getAuthorities();
         logger.info("UserService.loadUserByUsername： getAuthorities size: " + collection.size());
         if (user == null) {

@@ -45,7 +45,7 @@ import java.util.List;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     @Autowired
     private UserService userService;
@@ -95,12 +95,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                                         HttpServletResponse resp,
                                                         AuthenticationException e) throws IOException {
                         resp.setContentType("application/json;charset=utf-8");
-                        ResultBean resultBean = new ResultBean("LOGIN FAIL");
+                        ResultBean resultBean = new ResultBean();
                         resultBean.setCode(ResultBean.CHECK_FAIL);
+                        resultBean.setMsg("fail");
                         if (e instanceof BadCredentialsException ||
                                 e instanceof UsernameNotFoundException) {
-                            resultBean.setCode(-2);
-                            resultBean.setMsg("用户名或密码不正确");
+                            resultBean.setCode(ResultBean.USERNAME_OR_PASSWORD_NON);
                         }
 //                        else if (e instanceof LockedException) {
 //                            resultBean = RespBean.error("账户被锁定，请联系管理员!");
@@ -113,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                            respBean = RespBean.error("账户被禁用，请联系管理员!");
 //                        }
                         else {
-                            resultBean.setCode(-99);
+                            resultBean.setCode(ResultBean.UNKNOWN_EXCEPTION);
                             resultBean.setMsg("未知异常");
                         }
                         ObjectMapper om = new ObjectMapper();
@@ -131,6 +131,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        resp.setStatus(400);
                         resp.setContentType("application/json;charset=utf-8");
                         ResultBean<Object> resultBean = new ResultBean<Object>(UserUtil.getCurrentUser());
+                        Long userId = UserUtil.getCurrentUser().getId();
+                        UserUtil.setUser(userId.toString());
                         resultBean.setCode(0);
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = resp.getWriter();
