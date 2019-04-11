@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.mapper.UserMapper">
+
+	<resultMap type="com.team.bean.User" id="UserMap">
+		<id column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<collection property="roles" ofType="com.team.bean.Role">
+			<id column="role_id" property="id"/>
+			<result column="role_name" property="name"/>
+			<result column="nameZh" property="nameZh"/>
+		</collection>	
+	</resultMap>
+	
+	<select id="findUserByUserName" resultMap="UserMap">
+		select users.*,role.id as role_id,role.name as role_name,role.nameZh from users,user_role,role
+		where
+		users.id = user_role.user_id and
+		role.id = user_role.role_id and
+		users.username = #{username}
+	</select>
+	<insert id="addUser" parameterType="com.team.bean.User">
+		insert into users(username,password)
+		value(#{username},#{password})
+		</insert>
+	
+	<select id="findUserList" resultMap="UserMap">
+		select * from users
+	</select>
+	<select id="findUserById" parameterType="int" resultType="com.team.bean.User">
+		select * from users where id=#{id}
+	</select>
+<!-- 	<select id="findUserByName" parameterType="String" resultType="com.team.bean.User">
+		select * from users where username LIKE '%${username}%'
+	</select> -->
+	<update id="updateUser">
+		update users
+		<if test="user.username!=nill and user.username != ''">
+			username = #{user.username}
+		</if>
+		<if test="user.password =nill and user.password != ''">
+			AND password = #{user.password}
+		</if>
+		where users.id = #{user.id,jdbcType=BIGINT}
+	</update>
+	
+	<delete id="deleteUserByUsername">
+		delete from users where users.username=#{username}
+	</delete>
+		
+</mapper>

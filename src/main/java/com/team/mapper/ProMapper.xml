@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.mapper.ProMapper">
+	<select id="findAllPros" resultType="com.team.bean.Professional">
+		select * from professionals
+	</select>
+	
+	<select id="findProsByName" resultType="com.team.bean.Professional">
+		select *from professionals where name LIKE '%${name}%'
+	</select>
+	
+	<select id="findProById" resultType="com.team.bean.Professional">
+		select *from professionals where id = #{id}
+	</select>
+	
+	<insert id="addPro">
+		insert into professionals(name,manage_id,parent_id)
+		value(#{name},#{manageId},#{parentId})
+	</insert>
+	
+	<update id="updatePro">
+		update professionals
+        <set>
+            <if test="pro.name != null">
+                name = #{pro.name,jdbcType=VARCHAR},
+            </if>           
+            <if test="pro.manageId != null">
+                manage_id = #{pro.manageId,jdbcType=INTEGER},
+            </if>
+            <if test="pro.parentId != null">
+                parent_id = #{pro.parentId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where professionals.id = #{pro.id,jdbcType=BIGINT}
+	</update>
+	
+	<delete id="deleteProById">
+		delete from professionals where id=#{id}
+	</delete>
+
+</mapper>

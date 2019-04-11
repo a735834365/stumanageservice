@@ -2,10 +2,11 @@ package com.team.common.utils;
 
 import com.team.bean.User;
 import com.team.common.exception.UnloginException;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.junit.Before;
 import org.slf4j.MDC;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.security.Security;
 
 /**
  * create by yifeng

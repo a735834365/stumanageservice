@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.mapper.ClaMapper">
+	<select id="findAllClas" resultType="com.team.bean.Cla">
+		select * from cla
+	</select>
+	
+	<select id="findClasByName" resultType="com.team.bean.Cla">
+		select *from cla where name LIKE '%${name}%'
+	</select>
+	
+	<select id="findClaById" resultType="com.team.bean.Cla">
+		select *from cla where id = #{id}
+	</select>
+	
+	<insert id="addCla">
+		insert into cla(name,manage_id,parent_id)
+		value(#{name},#{manageId},#{parentId})
+	</insert>
+	
+	<update id="updateCla">
+		update cla
+        <set>
+            <if test="cla.name != null">
+                name = #{cla.name,jdbcType=VARCHAR},
+            </if>           
+            <if test="cla.manageId != null">
+                manage_id = #{cla.manageId,jdbcType=INTEGER},
+            </if>
+            <if test="cla.parentId != null">
+                parent_id = #{cla.parentId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where cla.id = #{cla.id,jdbcType=BIGINT}
+	</update>
+	
+	<delete id="deleteClaById">
+		delete from cla where id=#{id}
+	</delete>
+</mapper>

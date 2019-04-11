@@ -1,26 +1,19 @@
 package com.team.service;
 
-import com.team.bean.Role;
 import com.team.bean.User;
 import com.team.mapper.UserMapper;
-import javafx.scene.Node;
-import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * 登陆在这里处理
@@ -40,6 +33,7 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     // 通过连接数据库获取用户权限和用户信息
+    //He's a Pirate (From "Pirates of the Caribbean"
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("UserService.loadUserByUsername： username = " + username);

@@ -1,22 +1,17 @@
 package com.team.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team.bean.Menu;
 import com.team.bean.Role;
 import com.team.service.MenuService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.oauth2.provider.client.Jackson2ArrayOrStringDeserializer;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -68,33 +63,6 @@ public class CustomMetadataSource implements FilterInvocationSecurityMetadataSou
         return SecurityConfig.createList("ROLE_LOGIN");
     }
 
-    // 模拟数据
-    private List<Menu> initMenu(List allMenu) {
-        List<Role> roles = new ArrayList<>();
-        Role role = new Role();
-        role.setId(1L);
-        role.setName("ROLE_manager");
-        Role role2 = new Role();
-        role.setId(2L);
-        role.setName("ROLE_admin");
-        Role role3 = new Role();
-        role.setId(3L);
-        role.setName("ROLE_test1");
-        roles.add(role);
-        roles.add(role2);
-        roles.add(role3);
-        Menu menu = new Menu();
-        menu.setRoles(roles);
-        // 增加对应的页面
-        menu.setUrl("/demo");
-        Menu menu2 = new Menu();
-        menu2.setRoles(roles);
-        // 增加对应的页面
-        menu2.setUrl("/cocohello");
-        allMenu.add(menu);
-        allMenu.add(menu2);
-        return allMenu;
-    }
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team.mapper.DeptMapper">
+	<select id="findAllDepts" resultType="com.team.bean.Dept">
+		select * from depts
+	</select>
+	
+	<select id="findDeptByName" resultType="com.team.bean.Dept">
+		select *from depts where name LIKE '%${name}%'
+	</select>
+	
+	<select id="findDeptById" resultType="com.team.bean.Dept">
+		select *from depts where id = #{id}
+	</select>
+	
+	<insert id="addDept">
+		insert into depts(name,manage_id)
+		value(#{name},#{manageId})
+	</insert>
+	
+	<update id="updateDept">
+		update depts
+        <set>
+            <if test="dept.name != null">
+                name = #{dept.name,jdbcType=VARCHAR},
+            </if>           
+            <if test="dept.manageId != null">
+                manage_id = #{dept.manageId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where depts.id = #{dept.id,jdbcType=BIGINT}
+	</update>
+	
+	<delete id="deleteDeptById">
+		delete from depts where id=#{id}
+	</delete>
+</mapper>

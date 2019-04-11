@@ -127,6 +127,18 @@
                 </configuration>
             </plugin>
         </plugins>
+        <!-- 增加此处配置， 否则mapper.xml可能读取不到 -->
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
     </build>
 
 

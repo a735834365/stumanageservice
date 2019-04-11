@@ -2,6 +2,7 @@ package com.team.service;
 
 import com.team.bean.Menu;
 import com.team.mapper.MenuMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class MenuService {
 
-    @Resource
+    @Autowired
     MenuMapper menuMapper;
 
     public List<Menu> getAllMenu() {

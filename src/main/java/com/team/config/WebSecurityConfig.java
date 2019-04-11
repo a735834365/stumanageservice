@@ -1,6 +1,7 @@
 package com.team.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team.bean.RespBean;
 import com.team.common.beans.ResultBean;
 import com.team.common.utils.UserUtil;
 import com.team.exception.AuthenticationAccessDeniedHandler;
@@ -10,6 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,12 +22,14 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/index.html", "/static/**", "/login_p");
+        web.ignoring().antMatchers("/index.html", "/static/**", "/login_p", "/favicon.ico");
     }
 
     @Override
@@ -77,10 +84,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
                 .and()
-                .formLogin().loginPage("/login_p").loginProcessingUrl("/login")
-                .usernameParameter("username")
-                // 自定义登录请求，即表单中的action
-                .passwordParameter("password")
+                .formLogin().loginPage("/login_p")
+                // 自定义登录请求，对应表单中的action
+                // 可在postman中发送 post请求 http://localhost:8060/login?username=asdf123&password=123456
+                .loginProcessingUrl("/login")
+                .usernameParameter("username").passwordParameter("password")
                 .failureHandler(new AuthenticationFailureHandler() {
                     @Override
                     public void onAuthenticationFailure(HttpServletRequest req,
@@ -89,21 +97,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         resp.setContentType("application/json;charset=utf-8");
                         ResultBean resultBean = new ResultBean("LOGIN FAIL");
                         resultBean.setCode(ResultBean.CHECK_FAIL);
-//                        if (e instanceof BadCredentialsException ||
-//                                e instanceof UsernameNotFoundException) {
-//                            respBean = RespBean.error("账户名或者密码输入错误!");
-//                        } else if (e instanceof LockedException) {
-//                            respBean = RespBean.error("账户被锁定，请联系管理员!");
-//                        } else if (e instanceof CredentialsExpiredException) {
+                        if (e instanceof BadCredentialsException ||
+                                e instanceof UsernameNotFoundException) {
+                            resultBean.setCode(-2);
+                            resultBean.setMsg("用户名或密码不正确");
+                        }
+//                        else if (e instanceof LockedException) {
+//                            resultBean = RespBean.error("账户被锁定，请联系管理员!");
+//                        }
+//                        else if (e instanceof CredentialsExpiredException) {
 //                            respBean = RespBean.error("密码过期，请联系管理员!");
 //                        } else if (e instanceof AccountExpiredException) {
 //                            respBean = RespBean.error("账户过期，请联系管理员!");
 //                        } else if (e instanceof DisabledException) {
 //                            respBean = RespBean.error("账户被禁用，请联系管理员!");
-//                        } else {
-//                            respBean = RespBean.error("登录失败!");
 //                        }
-                        resp.setStatus(401);
+                        else {
+                            resultBean.setCode(-99);
+                            resultBean.setMsg("未知异常");
+                        }
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = resp.getWriter();
                         out.write(om.writeValueAsString(resultBean));
@@ -116,14 +128,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest req,
                                                         HttpServletResponse resp,
                                                         Authentication auth) throws IOException {
+//                        resp.setStatus(400);
                         resp.setContentType("application/json;charset=utf-8");
-                        List<Object> list = new ArrayList<>();
-                        list.add("登陆成功");
-                        list.add(UserUtil.getCurrentUser());
-                        ResultBean<Object> respBean = new ResultBean<Object>(list);
+                        ResultBean<Object> resultBean = new ResultBean<Object>(UserUtil.getCurrentUser());
+                        resultBean.setCode(0);
                         ObjectMapper om = new ObjectMapper();
                         PrintWriter out = resp.getWriter();
-                        out.write(om.writeValueAsString(respBean));
+                        out.write(om.writeValueAsString(resultBean));
                         out.flush();
                         out.close();
                     }
