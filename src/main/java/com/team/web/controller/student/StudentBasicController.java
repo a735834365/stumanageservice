@@ -19,7 +19,7 @@ public class StudentBasicController {
     @Autowired
     private StudentService studentService;
 
-    @RequestMapping(value = "basicdata", method = RequestMethod.GET)
+    @RequestMapping(value = "/basicdata", method = RequestMethod.GET)
     public ResultBean<List> getAllStudent() {
         return new ResultBean<>(studentService.findAllStudent());
     }

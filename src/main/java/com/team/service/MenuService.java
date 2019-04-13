@@ -1,6 +1,7 @@
 package com.team.service;
 
 import com.team.bean.Menu;
+import com.team.common.utils.UserUtil;
 import com.team.mapper.MenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class MenuService {
 
     public List<Menu> getAllMenu() {
         return menuMapper.getAllMenu();
+    }
+
+    public List<Menu> getMenuByUserId() {
+        return menuMapper.getMenusByUId(UserUtil.getCurrentUser().getId());
     }
 
 }
